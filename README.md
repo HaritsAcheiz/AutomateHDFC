@@ -48,12 +48,3 @@ This Python script automates actions on HDFC Bank's website.
 8. **Watch the Process**
    - The script will automate actions on HDFC Bank's website.
    - No user intervention is required; you can simply watch the process.
-
-## Important Notes
-
-- **Security**: Do not share your script, credentials, or any sensitive information with others.
-- **Responsibility**: Use the script responsibly and comply with the HDFC bank's terms of service.
-
-- **Browser Compatibility**: Ensure that a newer version of Mozilla Firefox is installed on your computer. The script relies on Firefox for automation.
-
-Remember, automating actions on websites, especially banking websites, can have serious consequences if not done responsibly. Make sure the user understands the potential risks and the importance of using the script in a legal and ethical manner.
