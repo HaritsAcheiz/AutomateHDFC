@@ -2,13 +2,15 @@ import urllib.parse
 from random import choice
 from time import sleep
 from typing import List
-
+from dotenv import load_dotenv
+import os
 from selenium.webdriver import FirefoxOptions, Firefox, Keys
 from dataclasses import dataclass, field
-
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
+
+load_dotenv()
 
 @dataclass
 class AutomateHDFC:
@@ -37,7 +39,7 @@ class AutomateHDFC:
         opt.set_preference("browser.privatebrowsing.autostart", True)
 
         driver = Firefox(options=opt)
-        print(ua)
+        # print(ua)
 
         return driver
 
@@ -49,9 +51,9 @@ class AutomateHDFC:
         wait = WebDriverWait(driver, 20)
         wait.until(expected_conditions.element_to_be_clickable((By.CSS_SELECTOR, 'input#liabiltyLoginCustId')))
         driver.find_element(By.CSS_SELECTOR, 'input#liabiltyLoginCustId').click()
-        driver.find_element(By.CSS_SELECTOR, 'input#liabiltyLoginCustId').send_keys('182802584' + Keys.RETURN)
+        driver.find_element(By.CSS_SELECTOR, 'input#liabiltyLoginCustId').send_keys(os.getenv('HDFC_LOGIN_ID') + Keys.RETURN)
         wait.until(expected_conditions.element_to_be_clickable((By.CSS_SELECTOR, 'input#keyboard')))
-        driver.find_element(By.CSS_SELECTOR, 'input#keyboard').send_keys('aaditya2023')
+        driver.find_element(By.CSS_SELECTOR, 'input#keyboard').send_keys(os.getenv('HDFC_PASSWORD'))
         driver.find_element(By.CSS_SELECTOR, 'input#secureAccessID').click()
         driver.find_element(By.CSS_SELECTOR, 'a#loginBtn').click()
         elements = wait.until(expected_conditions.presence_of_all_elements_located((By.CSS_SELECTOR, 'ul.f6 > li')))
@@ -61,9 +63,11 @@ class AutomateHDFC:
                 element.find_element(By.CSS_SELECTOR, 'a').click()
                 break
         wait.until(expected_conditions.element_to_be_clickable((By.CSS_SELECTOR, 'input#mtPayeeSearch')))
-
-        # input('press Enter')
-        sleep(100)
+        sleep(10)
+        driver.find_element(By.CSS_SELECTOR, 'button.btn.btn-primary.login-btn').click()
+        wait.until(expected_conditions.element_to_be_clickable((By.CSS_SELECTOR, 'a.btn.btn-primary.nb-logout.yes-btn'))).click()
+        # input('Please Enter')
+        sleep(10)
         driver.close()
 
 if __name__ == '__main__':
