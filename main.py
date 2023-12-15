@@ -54,7 +54,8 @@ class AutomateHDFC:
         driver.find_element(By.CSS_SELECTOR, 'input#liabiltyLoginCustId').send_keys(os.getenv('HDFC_LOGIN_ID') + Keys.RETURN)
         wait.until(expected_conditions.element_to_be_clickable((By.CSS_SELECTOR, 'input#keyboard')))
         driver.find_element(By.CSS_SELECTOR, 'input#keyboard').send_keys(os.getenv('HDFC_PASSWORD'))
-        driver.find_element(By.CSS_SELECTOR, 'input#secureAccessID').click()
+        wait.until(expected_conditions.element_to_be_clickable((By.CSS_SELECTOR, 'input#secureAccessID'))).click()
+        # driver.find_element(By.CSS_SELECTOR, 'input#secureAccessID').click()
         driver.find_element(By.CSS_SELECTOR, 'a#loginBtn').click()
         elements = wait.until(expected_conditions.presence_of_all_elements_located((By.CSS_SELECTOR, 'ul.f6 > li')))
         for element in elements:
