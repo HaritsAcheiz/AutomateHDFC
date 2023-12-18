@@ -55,20 +55,32 @@ class AutomateHDFC:
         wait.until(expected_conditions.element_to_be_clickable((By.CSS_SELECTOR, 'input#keyboard')))
         driver.find_element(By.CSS_SELECTOR, 'input#keyboard').send_keys(os.getenv('HDFC_PASSWORD'))
         wait.until(expected_conditions.element_to_be_clickable((By.CSS_SELECTOR, 'input#secureAccessID'))).click()
-        # driver.find_element(By.CSS_SELECTOR, 'input#secureAccessID').click()
         driver.find_element(By.CSS_SELECTOR, 'a#loginBtn').click()
         elements = wait.until(expected_conditions.presence_of_all_elements_located((By.CSS_SELECTOR, 'ul.f6 > li')))
         for element in elements:
-            # print(element.text)
-            if 'Money Transfer' in element.text:
+            if 'add payee' in element.text.lower():
                 element.find_element(By.CSS_SELECTOR, 'a').click()
                 break
-        wait.until(expected_conditions.element_to_be_clickable((By.CSS_SELECTOR, 'input#mtPayeeSearch')))
-        sleep(10)
-        driver.find_element(By.CSS_SELECTOR, 'button.btn.btn-primary.login-btn').click()
-        wait.until(expected_conditions.element_to_be_clickable((By.CSS_SELECTOR, 'a.btn.btn-primary.nb-logout.yes-btn'))).click()
-        # input('Please Enter')
-        sleep(10)
+        wait.until(expected_conditions.element_to_be_clickable((By.CSS_SELECTOR, 'input#payeeNicknameControl'))).click()
+        driver.find_element(By.CSS_SELECTOR, 'input#payeeNicknameControl').send_keys(os.getenv('PAYEE_NICKNAME'))
+        elements = driver.find_elements(By.CSS_SELECTOR, 'div.col-md-12.margin-top10.radio-input.ng-scope > div')
+        for element in elements:
+            if 'non-hdfc bank account in india' in element.text.lower():
+                element.find_element(By.CSS_SELECTOR, 'input').click()
+                break
+        wait.until(expected_conditions.element_to_be_clickable((By.CSS_SELECTOR, 'input#nameOnAccount'))).click()
+        driver.find_element(By.CSS_SELECTOR, 'input#nameOnAccount').send_keys(os.getenv('PAYEE_ACCOUNT_NAME') + Keys.TAB + os.getenv('PAYEE_ACCOUNT') + Keys.TAB + os.getenv('PAYEE_ACCOUNT'))
+        driver.find_element(By.CSS_SELECTOR, 'div[placeholder="Please Choose One"] > span').click()
+        driver.find_element(By.CSS_SELECTOR, 'input[placeholder="Please Choose One"]').send_keys('Savings' + Keys.RETURN)
+        driver.find_element(By.CSS_SELECTOR, 'a[ng-click="addPayeeNonHDFCCtrl.findIFSC()"]').click()
+        wait.until(expected_conditions.element_to_be_clickable((By.CSS_SELECTOR, 'input#ifscCodeControl'))).click()
+        driver.find_element(By.CSS_SELECTOR, 'input#ifscCodeControl').send_keys(os.getenv('PAYEE_IFSC'))
+        wait.until(expected_conditions.element_to_be_clickable((By.CSS_SELECTOR, 'a[control="findIFSCCtrl.ifscContinueControl"]'))).click()
+        wait.until(expected_conditions.element_to_be_clickable((By.CSS_SELECTOR, 'a[ng-click="findIFSCCtrl.selectedBank(Details)"]'))).click()
+        wait.until(expected_conditions.element_to_be_clickable((By.CSS_SELECTOR, 'a[control="addPayeeCtrl.continueControlToConfirmPage"]'))).click()
+        wait.until(expected_conditions.element_to_be_clickable((By.CSS_SELECTOR, 'input[ng-click="nonHDFCPayeeConfirmCtrl.checkValidation()"]'))).click()
+        driver.find_element(By.CSS_SELECTOR, 'a[ng-click="nonHDFCPayeeConfirmCtrl.confirmNonHdfcPayee()"]').click()
+        input('Please Enter')
         driver.close()
 
 if __name__ == '__main__':
